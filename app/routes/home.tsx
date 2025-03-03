@@ -1,13 +1,14 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import { App } from "../app";
+import 'tachyons';
 
-export function meta({}: Route.MetaArgs) {
+export function meta({ }: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Face Recognition App" },
+    { name: "description", content: "This website will detect faces in your pictures." },
   ];
 }
 
 export default function Home() {
-  return <Welcome />;
+  return <App />;
 }
