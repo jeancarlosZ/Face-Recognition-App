@@ -1,10 +1,10 @@
 const { ClarifaiStub, grpc } = require("clarifai-nodejs-grpc");
 
 // Your PAT (Personal Access Token) can be found in the Account's Security section after logging into the Clarifai website
-const PAT = 'YOUR_PAT_HERE';
-const USER_ID = 'clarifai';
-const APP_ID = 'main';
-const MODEL_ID = 'face-detection';
+const PAT = "YOUR_PAT_HERE";
+const USER_ID = "clarifai";
+const APP_ID = "main";
+const MODEL_ID = "face-detection";
 const stub = ClarifaiStub.grpc();
 const metadata = new grpc.Metadata();
 

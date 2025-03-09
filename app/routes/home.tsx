@@ -1,6 +1,6 @@
 import type { Route } from "./+types/home";
 import { App } from "../app";
-import 'tachyons';
+import "tachyons";
 
 export function meta({ }: Route.MetaArgs) {
   return [
