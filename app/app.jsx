@@ -14,6 +14,17 @@ export function App() {
   const [faceBoxes, setFaceBoxes] = useState([]);
   const [route, setRoute] = useState("signin");
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [user, setUser] = useState({});
+
+  const loadUser = (data) => {
+    setUser({
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      entries: data.entries,
+      joined: data.joined
+    })
+  }
 
   const calculateFaceLocations = (faceBoxes) => {
     const image = document.getElementById("inputimage");
@@ -40,7 +51,7 @@ export function App() {
 
   const onButtonSubmit = () => {
     setImageUrl(input);
-    fetch("http://localhost:3000/imageUrl", {
+    fetch("http://localhost:3000/imageurl", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -49,6 +60,19 @@ export function App() {
     })
       .then(response => response.json())
       .then(response => {
+        if (response) {
+          fetch("http://localhost:3000/image", {
+            method: "put",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id: user.id
+            })
+          })
+            .then(response => response.json())
+            .then(entries => {
+              setUser(prevUser => ({ ...prevUser, entries: entries }));
+            })
+        };
         displayFaceBoxes(calculateFaceLocations(response));
       })
       .catch(err => console.log(err));
@@ -70,7 +94,10 @@ export function App() {
       {route === "home"
         ? <div>
           <Logo />
-          <Rank />
+          <Rank
+            name={user.name}
+            entries={user.entries}
+          />
           <ImageLinkForm
             onInputChange={onInputChange}
             onButtonSubmit={onButtonSubmit}
@@ -78,8 +105,8 @@ export function App() {
           {imageUrl && <FaceRecognition imageUrl={imageUrl} faceBoxes={faceBoxes} />}
         </div>
         : (route === "signin"
-          ? <SignIn onRouteChange={onRouteChange} />
-          : <Register onRouteChange={onRouteChange} />
+          ? <SignIn loadUser={loadUser} onRouteChange={onRouteChange} />
+          : <Register loadUser={loadUser} onRouteChange={onRouteChange} />
         )
       }
     </main>
