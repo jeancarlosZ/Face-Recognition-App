@@ -43,7 +43,7 @@ const ParticlesEffect = () => {
       },
       particles: {
         color: {
-          value: "#FFD700",
+          value: "#FFFFFF",
         },
         move: {
           direction: "outside",

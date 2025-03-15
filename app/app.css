@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .app {
-  @apply bg-linear-to-r from-pink-500 to-cyan-500;
+  @apply bg-linear-to-r from-pink-300 to-cyan-300;
   font-family: 'Courier New', Courier, monospace;
   text-align: center;
   position: fixed;

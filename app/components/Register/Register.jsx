@@ -4,36 +4,83 @@ const Register = ({ loadUser, onRouteChange }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [nameError, setNameError] = useState("Name is required");
+  const [emailError, setEmailError] = useState("Email is required");
+  const [passwordError, setPasswordError] = useState("Password is required");
 
   const onNameChange = (event) => {
-    setName(event.target.value);
+    const nameValue = event.target.value;
+    setName(nameValue);
+
+    if (nameValue.trim() === "") {
+      setNameError("Name is required");
+    } else {
+      setNameError("");
+    }
   }
+
+  // Regular expression for basic email validation
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   const onEmailChange = (event) => {
-    setEmail(event.target.value);
+    const emailValue = event.target.value;
+    setEmail(emailValue);
+
+    if (emailValue.trim() === "") {
+      setEmailError("Email is required");
+    } else if (!emailRegex.test(emailValue)) {
+      setEmailError("Please enter a valid email address");
+    } else {
+      setEmailError("");
+    }
   }
 
+  // Minimum length and regular expression for password
+  const minLength = 8;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).+$/;
+
   const onPasswordChange = (event) => {
-    setPassword(event.target.value);
+    const passwordValue = event.target.value;
+    setPassword(passwordValue);
+
+    if (passwordValue.trim() === "") {
+      setPasswordError("Password is required");
+    } else if (passwordValue.length < minLength) {
+      setPasswordError(`Password must be at least ${minLength} characters`);
+    } else if (!passwordRegex.test(passwordValue)) {
+      setPasswordError("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character");
+    } else {
+      setPasswordError("");
+    }
   }
 
   const onSubmitSignIn = () => {
-    fetch("http://localhost:3000/register", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        password: password
+    if (!nameError && !emailError && !passwordError) {
+      fetch("http://localhost:3000/register", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          password: password
+        })
       })
-    })
-      .then(response => response.json())
-      .then(user => {
-        if (user) {
-          loadUser(user);
-          onRouteChange("home");
-        };
-      })
+        .then(response => response.json())
+        .then(user => {
+          if (user.id) {
+            loadUser(user);
+            onRouteChange("home");
+          } else {
+            alert("Email already has an account with us.");
+            setName("");
+            setEmail("");
+            setPassword("");
+            setNameError("Name is required");
+            setEmailError("Email is required");
+            setPasswordError("Password is required");
+          }
+        })
+    }
   }
 
   return (
@@ -45,33 +92,54 @@ const Register = ({ loadUser, onRouteChange }) => {
             <div className="mt3">
               <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
               <input
-                className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                className="f6 b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                 type="text"
-                name="name"
-                id="name"
+                value={name}
+                placeholder="Please enter name"
                 onChange={onNameChange}
               />
             </div>
+            {nameError && <p style={{ color: "red" }}>{nameError}</p>}
             <div className="mt3">
               <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
               <input
-                className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                className="f6 b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                 type="email"
-                name="email-address"
-                id="email-address"
+                value={email}
+                placeholder="Please enter email"
                 onChange={onEmailChange}
               />
             </div>
+            {emailError && <p style={{ color: "red" }}>{emailError}</p>}
             <div className="mv3">
               <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
               <input
-                className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                className="f6 b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                 type="password"
-                name="password"
-                id="password"
+                value={password}
+                placeholder="Please enter password"
                 onChange={onPasswordChange}
               />
             </div>
+            {passwordError && (
+              <ul>
+                <li style={{ color: password.length >= minLength ? "green" : "red" }}>
+                  Minimum {minLength} characters
+                </li>
+                <li style={{ color: /[a-z]/.test(password) ? "green" : "red" }}>
+                  Contains at least one lowercase letter
+                </li>
+                <li style={{ color: /[A-Z]/.test(password) ? "green" : "red" }}>
+                  Contains at least one uppercase letter
+                </li>
+                <li style={{ color: /\d/.test(password) ? "green" : "red" }}>
+                  Contains at least one number
+                </li>
+                <li style={{ color: /[!@#$%^&*]/.test(password) ? "green" : "red" }}>
+                  Contains at least one special character from !@#$%^&*
+                </li>
+              </ul>
+            )}
           </fieldset>
           <div>
             <input

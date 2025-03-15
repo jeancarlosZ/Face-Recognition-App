@@ -13,6 +13,11 @@ const SignIn = ({ loadUser, onRouteChange }) => {
   }
 
   const onSubmitSignIn = () => {
+    if (!email || email.trim() === "" || !password || password.trim() === "") {
+      alert("Email and password are required");
+      return;
+    }
+
     fetch("http://localhost:3000/signin", {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -26,7 +31,11 @@ const SignIn = ({ loadUser, onRouteChange }) => {
         if (user.id) {
           loadUser(user);
           onRouteChange("home");
-        };
+        } else {
+          alert("Invalid credentials");
+          setEmail("");
+          setPassword("");
+        }
       })
   }
 
@@ -39,20 +48,20 @@ const SignIn = ({ loadUser, onRouteChange }) => {
             <div className="mt3">
               <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
               <input
-                className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                className="f6 b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                 type="email"
-                name="email-address"
-                id="email-address"
+                value={email}
+                placeholder="Please enter email"
                 onChange={onEmailChange}
               />
             </div>
             <div className="mv3">
               <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
               <input
-                className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                className="f6 b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                 type="password"
-                name="password"
-                id="password"
+                value={password}
+                placeholder="Please enter password"
                 onChange={onPasswordChange}
               />
             </div>
