@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+.app {
+  @apply bg-linear-to-r from-pink-300 to-cyan-300;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  overflow: auto;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  cursor: pointer;
+}
+
+.particles {
+  position: fixed;
+  z-index: -1;
+}
