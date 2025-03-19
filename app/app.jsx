@@ -60,7 +60,7 @@ export function App() {
     })
       .then(response => response.json())
       .then(response => {
-        if (response) {
+        if (Array.isArray(response)) {
           fetch("http://localhost:3000/image", {
             method: "put",
             headers: { "Content-Type": "application/json" },
@@ -71,9 +71,10 @@ export function App() {
             .then(response => response.json())
             .then(entries => {
               setUser(prevUser => ({ ...prevUser, entries: entries }));
-            })
-        };
-        displayFaceBoxes(calculateFaceLocations(response));
+            }).catch(err => console.log(err));
+
+          displayFaceBoxes(calculateFaceLocations(response));
+        }
       })
       .catch(err => console.log(err));
   }
@@ -81,7 +82,7 @@ export function App() {
   const onRouteChange = (route) => {
     if (route === "home") {
       setIsSignedIn(true);
-    } else {
+    } else if (route === "signout") {
       setIsSignedIn(false);
     }
     setRoute(route);
@@ -92,21 +93,25 @@ export function App() {
       <ParticlesEffect />
       <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
       {route === "home"
-        ? <div>
-          <Logo />
-          <Rank
-            name={user.name}
-            entries={user.entries}
-          />
-          <ImageLinkForm
-            onInputChange={onInputChange}
-            onButtonSubmit={onButtonSubmit}
-          />
-          {imageUrl && <FaceRecognition imageUrl={imageUrl} faceBoxes={faceBoxes} />}
-        </div>
-        : (route === "signin"
-          ? <SignIn loadUser={loadUser} onRouteChange={onRouteChange} />
-          : <Register loadUser={loadUser} onRouteChange={onRouteChange} />
+        ? (
+          <div>
+            <Logo />
+            <Rank
+              name={user.name}
+              entries={user.entries}
+            />
+            <ImageLinkForm
+              onInputChange={onInputChange}
+              onButtonSubmit={onButtonSubmit}
+            />
+            {imageUrl && <FaceRecognition imageUrl={imageUrl} faceBoxes={faceBoxes} />}
+          </div>
+        )
+        : (
+          <div>
+            {(route === "signin") && <SignIn loadUser={loadUser} onRouteChange={onRouteChange} />}
+            {(route === "register") && <Register loadUser={loadUser} onRouteChange={onRouteChange} />}
+          </div>
         )
       }
     </main>
