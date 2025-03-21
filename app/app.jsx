@@ -9,11 +9,10 @@ import SignIn from "app/components/SignIn/SignIn";
 import Register from "app/components/Register/Register";
 
 export function App() {
-  const [input, setInput] = useState("");
+  const [imageUrlEntry, setImageUrlEntry] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [faceBoxes, setFaceBoxes] = useState([]);
   const [route, setRoute] = useState("signin");
-  const [isSignedIn, setIsSignedIn] = useState(false);
   const [user, setUser] = useState({});
 
   const loadUser = (data) => {
@@ -27,7 +26,7 @@ export function App() {
   }
 
   const calculateFaceLocations = (faceBoxes) => {
-    const image = document.getElementById("inputimage");
+    const image = document.getElementById("image-from-url");
     const width = Number(image.width);
     const height = Number(image.height);
 
@@ -45,23 +44,24 @@ export function App() {
     setFaceBoxes(faceBoxes);
   }
 
-  const onInputChange = (event) => {
-    setInput(event.target.value);
+  const onImageUrlEntryChange = (event) => {
+    setImageUrlEntry(event.target.value);
   }
 
   const onButtonSubmit = () => {
-    setImageUrl(input);
-    fetch("http://localhost:3000/imageurl", {
+    setImageUrl(imageUrlEntry);
+
+    fetch(`${import.meta.env.VITE_API_URL}/imageurl`, {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        input: input
+        imageUrlEntry: imageUrlEntry
       })
     })
       .then(response => response.json())
       .then(response => {
         if (Array.isArray(response)) {
-          fetch("http://localhost:3000/image", {
+          fetch(`${import.meta.env.VITE_API_URL}/image`, {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -77,21 +77,26 @@ export function App() {
         }
       })
       .catch(err => console.log(err));
+
+    setImageUrlEntry("");
   }
 
   const onRouteChange = (route) => {
-    if (route === "home") {
-      setIsSignedIn(true);
-    } else if (route === "signout") {
-      setIsSignedIn(false);
+    if (route === "signout") {
+      setImageUrlEntry("");
+      setImageUrl("");
+      setFaceBoxes([]);
+      setRoute("signin");
+      setUser({});
+    } else {
+      setRoute(route);
     }
-    setRoute(route);
   }
 
   return (
     <main className="app">
       <ParticlesEffect />
-      <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
+      <Navigation onRouteChange={onRouteChange} route={route} />
       {route === "home"
         ? (
           <div>
@@ -101,7 +106,8 @@ export function App() {
               entries={user.entries}
             />
             <ImageLinkForm
-              onInputChange={onInputChange}
+              imageUrlEntry={imageUrlEntry}
+              onImageUrlEntryChange={onImageUrlEntryChange}
               onButtonSubmit={onButtonSubmit}
             />
             {imageUrl && <FaceRecognition imageUrl={imageUrl} faceBoxes={faceBoxes} />}
