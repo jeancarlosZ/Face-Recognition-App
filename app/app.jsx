@@ -14,6 +14,7 @@ export function App() {
   const [faceBoxes, setFaceBoxes] = useState([]);
   const [route, setRoute] = useState("signin");
   const [user, setUser] = useState({});
+  const [token, setToken] = useState("");
 
   const loadUser = (data) => {
     setUser({
@@ -53,17 +54,26 @@ export function App() {
 
     fetch(`${import.meta.env.VITE_API_URL}/imageurl`, {
       method: "post",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
       body: JSON.stringify({
         imageUrlEntry: imageUrlEntry
       })
     })
       .then(response => response.json())
       .then(response => {
-        if (Array.isArray(response)) {
+        if (response.message === "Unauthorized: Token expired") {
+          alert("Session expired. Logging out...");
+          onRouteChange("signout");
+        } else if (Array.isArray(response)) {
           fetch(`${import.meta.env.VITE_API_URL}/image`, {
             method: "put",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            },
             body: JSON.stringify({
               id: user.id
             })
@@ -88,6 +98,7 @@ export function App() {
       setFaceBoxes([]);
       setRoute("signin");
       setUser({});
+      setToken("");
     } else {
       setRoute(route);
     }
@@ -115,8 +126,8 @@ export function App() {
         )
         : (
           <div>
-            {(route === "signin") && <SignIn loadUser={loadUser} onRouteChange={onRouteChange} />}
-            {(route === "register") && <Register loadUser={loadUser} onRouteChange={onRouteChange} />}
+            {(route === "signin") && <SignIn loadUser={loadUser} onRouteChange={onRouteChange} setToken={setToken} />}
+            {(route === "register") && <Register loadUser={loadUser} onRouteChange={onRouteChange} setToken={setToken} />}
           </div>
         )
       }

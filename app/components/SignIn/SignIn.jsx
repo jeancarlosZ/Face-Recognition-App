@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const SignIn = ({ loadUser, onRouteChange }) => {
+const SignIn = ({ loadUser, onRouteChange, setToken }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -27,7 +27,10 @@ const SignIn = ({ loadUser, onRouteChange }) => {
       })
     })
       .then(response => response.json())
-      .then(user => {
+      .then(data => {
+        const { encryptedToken, user } = data;
+        setToken(encryptedToken);
+
         if (user.id) {
           loadUser(user);
           onRouteChange("home");
