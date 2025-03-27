@@ -7,6 +7,7 @@ import FaceRecognition from "app/components/FaceRecognition/FaceRecognition";
 import ParticlesEffect from "app/components/ParticlesEffect/ParticlesEffect";
 import SignIn from "app/components/SignIn/SignIn";
 import Register from "app/components/Register/Register";
+import Heartbeat from "app/components/Heartbeat/Heartbeat";
 
 export function App() {
   const [imageUrl, setImageUrl] = useState("");
@@ -40,6 +41,7 @@ export function App() {
   return (
     <main className="app">
       <ParticlesEffect />
+      <Heartbeat />
       <Navigation onRouteChange={onRouteChange} route={route} />
       {route === "home"
         ? (
