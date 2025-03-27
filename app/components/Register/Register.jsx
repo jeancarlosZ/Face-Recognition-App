@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { register } from "../../api/register";
 
 const Register = ({ loadUser, onRouteChange, setToken }) => {
   const [name, setName] = useState("");
@@ -54,35 +55,27 @@ const Register = ({ loadUser, onRouteChange, setToken }) => {
     }
   }
 
-  const onSubmitSignIn = () => {
+  const onSubmitSignIn = async () => {
     if (!nameError && !emailError && !passwordError) {
-      fetch(`${import.meta.env.VITE_API_URL}/register`, {
-        method: "post",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          password: password
-        })
-      })
-        .then(response => response.json())
-        .then(data => {
-          const { encryptedToken, user } = data;
-          setToken(encryptedToken);
+      try {
+        const { encryptedToken, user } = await register(name, email, password);
+        setToken(encryptedToken);
 
-          if (user.id) {
-            loadUser(user);
-            onRouteChange("home");
-          } else {
-            alert("Email already has an account with us.");
-            setName("");
-            setEmail("");
-            setPassword("");
-            setNameError("Name is required");
-            setEmailError("Email is required");
-            setPasswordError("Password is required");
-          }
-        })
+        if (user.id) {
+          loadUser(user);
+          onRouteChange("home");
+        } else {
+          alert("Email already has an account with us.");
+          setName("");
+          setEmail("");
+          setPassword("");
+          setNameError("Name is required");
+          setEmailError("Email is required");
+          setPasswordError("Password is required");
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { signin } from "../../api/signin";
 
 const SignIn = ({ loadUser, onRouteChange, setToken }) => {
   const [email, setEmail] = useState("");
@@ -12,34 +13,27 @@ const SignIn = ({ loadUser, onRouteChange, setToken }) => {
     setPassword(event.target.value);
   }
 
-  const onSubmitSignIn = () => {
+  const onSubmitSignIn = async () => {
     if (!email || email.trim() === "" || !password || password.trim() === "") {
       alert("Email and password are required");
       return;
     }
 
-    fetch(`${import.meta.env.VITE_API_URL}/signin`, {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        const { encryptedToken, user } = data;
-        setToken(encryptedToken);
+    try {
+      const { encryptedToken, user } = await signin(email, password);
+      setToken(encryptedToken);
 
-        if (user.id) {
-          loadUser(user);
-          onRouteChange("home");
-        } else {
-          alert("Invalid credentials");
-          setEmail("");
-          setPassword("");
-        }
-      })
+      if (user.id) {
+        loadUser(user);
+        onRouteChange("home");
+      } else {
+        alert("Invalid credentials");
+        setEmail("");
+        setPassword("");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
