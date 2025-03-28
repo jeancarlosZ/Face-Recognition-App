@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./ImageLinkForm.css";
-import { imageUrlSubmit, imageSubmitCount } from "../../api/image";
+import { imageUrlSubmit, imageSubmitCount, checkUrlIfImage } from "../../api/image";
 
 const ImageLinkForm = ({ setImageUrl, setFaceBoxes, onRouteChange, user, setUser, token }) => {
 	const [imageUrlEntry, setImageUrlEntry] = useState("");
@@ -29,19 +29,25 @@ const ImageLinkForm = ({ setImageUrl, setFaceBoxes, onRouteChange, user, setUser
 	}
 
 	const onDetectSubmit = async () => {
-		setImageUrl(imageUrlEntry);
-
 		try {
-			const response = await imageUrlSubmit(token, imageUrlEntry);
+			const isImage = await checkUrlIfImage(token, imageUrlEntry);
 
-			if (response === "Unauthorized: Token expired") {
+			if (isImage === "Unauthorized: Token expired") {
 				alert("Session expired. Logging out...");
 				onRouteChange("signout");
-			} else if (Array.isArray(response)) {
-				const entries = await imageSubmitCount(token, user);
+			} else if (isImage) {
+				setImageUrl(imageUrlEntry);
+				const response = await imageUrlSubmit(token, imageUrlEntry);
 
-				setUser(prevUser => ({ ...prevUser, entries: entries }));
-				displayFaceBoxes(calculateFaceLocations(response));
+				if (Array.isArray(response)) {
+					const entries = await imageSubmitCount(token, user);
+
+					setUser(prevUser => ({ ...prevUser, entries: entries }));
+					displayFaceBoxes(calculateFaceLocations(response));
+				}
+			} else {
+				alert("Invalid image URL");
+				setImageUrl("");
 			}
 		} catch (err) {
 			console.log(err);

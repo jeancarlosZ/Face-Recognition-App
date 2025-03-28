@@ -10,16 +10,13 @@ export const imageUrlSubmit = async (token, imageUrlEntry) => {
         imageUrlEntry: imageUrlEntry
       })
     });
-    const data = await response.json();
 
-    if (data.message === "Unauthorized: Token expired") {
-      return "Unauthorized: Token expired";
-    } else if (!response.ok) {
+    if (!response.ok) {
       console.log("Failed image URL submission");
       return null;
     }
 
-    return data;
+    return response.json();
   } catch (err) {
     console.log(err);
   }
@@ -44,6 +41,33 @@ export const imageSubmitCount = async (token, user) => {
     }
 
     return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const checkUrlIfImage = async (token, imageUrlEntry) => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/check-image`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        imageUrlEntry: imageUrlEntry
+      })
+    });
+    const data = await response.json();
+
+    if (data.message === "Unauthorized: Token expired") {
+      return data.message;
+    } else if (!response.ok) {
+      console.log("Failed to verify if URL points to an image");
+      return null;
+    }
+
+    return data;
   } catch (err) {
     console.log(err);
   }
