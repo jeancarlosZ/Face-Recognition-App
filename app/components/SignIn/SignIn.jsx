@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { signin } from "../../api/signin";
 
-const SignIn = ({ loadUser, onRouteChange, setToken }) => {
+const SignIn = ({ loadUser, onRouteChange }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,11 +20,10 @@ const SignIn = ({ loadUser, onRouteChange, setToken }) => {
     }
 
     try {
-      const { encryptedToken, user } = await signin(email, password);
-      setToken(encryptedToken);
+      const data = await signin(email, password);
 
-      if (user.id) {
-        loadUser(user);
+      if (data) {
+        loadUser(data.user);
         onRouteChange("home");
       } else {
         alert("Invalid credentials");

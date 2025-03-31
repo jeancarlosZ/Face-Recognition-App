@@ -1,14 +1,10 @@
-export const imageUrlSubmit = async (token, imageUrlEntry) => {
+export const imageUrlSubmit = async (imageUrlEntry) => {
   try {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/imageurl`, {
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        imageUrlEntry: imageUrlEntry
-      })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ imageUrlEntry }),
+      credentials: "include"
     });
 
     if (!response.ok) {
@@ -22,17 +18,13 @@ export const imageUrlSubmit = async (token, imageUrlEntry) => {
   }
 };
 
-export const imageSubmitCount = async (token, user) => {
+export const imageSubmitCount = async (user) => {
   try {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/image`, {
       method: "put",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        id: user.id
-      })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: user.id }),
+      credentials: "include"
     });
 
     if (!response.ok) {
@@ -46,17 +38,13 @@ export const imageSubmitCount = async (token, user) => {
   }
 };
 
-export const checkUrlIfImage = async (token, imageUrlEntry) => {
+export const checkUrlIfImage = async (imageUrlEntry) => {
   try {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/check-image`, {
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        imageUrlEntry: imageUrlEntry
-      })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ imageUrlEntry }),
+      credentials: "include"
     });
     const data = await response.json();
 

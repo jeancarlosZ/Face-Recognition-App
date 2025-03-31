@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { register } from "../../api/register";
 
-const Register = ({ loadUser, onRouteChange, setToken }) => {
+const Register = ({ loadUser, onRouteChange }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -58,11 +58,10 @@ const Register = ({ loadUser, onRouteChange, setToken }) => {
   const onSubmitSignIn = async () => {
     if (!nameError && !emailError && !passwordError) {
       try {
-        const { encryptedToken, user } = await register(name, email, password);
-        setToken(encryptedToken);
+        const data = await register(name, email, password);
 
-        if (user.id) {
-          loadUser(user);
+        if (data) {
+          loadUser(data.user);
           onRouteChange("home");
         } else {
           alert("Email already has an account with us.");

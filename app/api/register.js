@@ -3,11 +3,8 @@ export const register = async (name, email, password) => {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/register`, {
       method: "post",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        password: password
-      })
+      body: JSON.stringify({ name, email, password }),
+      credentials: "include"
     });
 
     if (!response.ok) {

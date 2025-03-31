@@ -14,7 +14,6 @@ export function App() {
   const [faceBoxes, setFaceBoxes] = useState([]);
   const [route, setRoute] = useState("signin");
   const [user, setUser] = useState({});
-  const [token, setToken] = useState("");
 
   const loadUser = (data) => {
     setUser({
@@ -32,7 +31,6 @@ export function App() {
       setFaceBoxes([]);
       setRoute("signin");
       setUser({});
-      setToken("");
     } else {
       setRoute(route);
     }
@@ -57,15 +55,14 @@ export function App() {
               onRouteChange={onRouteChange}
               user={user}
               setUser={setUser}
-              token={token}
             />
             {imageUrl && <FaceRecognition imageUrl={imageUrl} faceBoxes={faceBoxes} />}
           </div>
         )
         : (
           <div>
-            {(route === "signin") && <SignIn loadUser={loadUser} onRouteChange={onRouteChange} setToken={setToken} />}
-            {(route === "register") && <Register loadUser={loadUser} onRouteChange={onRouteChange} setToken={setToken} />}
+            {(route === "signin") && <SignIn loadUser={loadUser} onRouteChange={onRouteChange} />}
+            {(route === "register") && <Register loadUser={loadUser} onRouteChange={onRouteChange} />}
           </div>
         )
       }

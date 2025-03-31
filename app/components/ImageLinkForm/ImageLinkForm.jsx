@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./ImageLinkForm.css";
 import { imageUrlSubmit, imageSubmitCount, checkUrlIfImage } from "../../api/image";
 
-const ImageLinkForm = ({ setImageUrl, setFaceBoxes, onRouteChange, user, setUser, token }) => {
+const ImageLinkForm = ({ setImageUrl, setFaceBoxes, onRouteChange, user, setUser }) => {
 	const [imageUrlEntry, setImageUrlEntry] = useState("");
 
 	const calculateFaceLocations = (faceBoxes) => {
@@ -30,17 +30,17 @@ const ImageLinkForm = ({ setImageUrl, setFaceBoxes, onRouteChange, user, setUser
 
 	const onDetectSubmit = async () => {
 		try {
-			const isImage = await checkUrlIfImage(token, imageUrlEntry);
+			const isImage = await checkUrlIfImage(imageUrlEntry);
 
 			if (isImage === "Unauthorized: Token expired") {
 				alert("Session expired. Logging out...");
 				onRouteChange("signout");
 			} else if (isImage) {
 				setImageUrl(imageUrlEntry);
-				const response = await imageUrlSubmit(token, imageUrlEntry);
+				const response = await imageUrlSubmit(imageUrlEntry);
 
 				if (Array.isArray(response)) {
-					const entries = await imageSubmitCount(token, user);
+					const entries = await imageSubmitCount(user);
 
 					setUser(prevUser => ({ ...prevUser, entries: entries }));
 					displayFaceBoxes(calculateFaceLocations(response));
