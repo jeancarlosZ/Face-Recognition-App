@@ -48,8 +48,8 @@ export const checkUrlIfImage = async (imageUrlEntry) => {
     });
     const data = await response.json();
 
-    if (data.message === "Unauthorized: Token expired") {
-      return data.message;
+    if (data.message && !data.message.includes("Failed to fetch image headers")) {
+      return data;
     } else if (!response.ok) {
       console.log("Failed to verify if URL points to an image");
       return null;

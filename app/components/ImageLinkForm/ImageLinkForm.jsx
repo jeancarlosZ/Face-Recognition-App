@@ -32,10 +32,10 @@ const ImageLinkForm = ({ setImageUrl, setFaceBoxes, onRouteChange, user, setUser
 		try {
 			const isImage = await checkUrlIfImage(imageUrlEntry);
 
-			if (isImage === "Unauthorized: Token expired") {
+			if (isImage !== null && isImage.message) {
 				alert("Session expired. Logging out...");
 				onRouteChange("signout");
-			} else if (isImage) {
+			} else if (isImage === true) {
 				setImageUrl(imageUrlEntry);
 				const response = await imageUrlSubmit(imageUrlEntry);
 
