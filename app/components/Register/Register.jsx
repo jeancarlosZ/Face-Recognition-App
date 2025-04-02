@@ -60,10 +60,7 @@ const Register = ({ loadUser, onRouteChange }) => {
       try {
         const data = await register(name, email, password);
 
-        if (data) {
-          loadUser(data.user);
-          onRouteChange("home");
-        } else {
+        if (data === null) {
           alert("Email already has an account with us.");
           setName("");
           setEmail("");
@@ -71,6 +68,11 @@ const Register = ({ loadUser, onRouteChange }) => {
           setNameError("Name is required");
           setEmailError("Email is required");
           setPasswordError("Password is required");
+        } else if (data) {
+          loadUser(data.user);
+          onRouteChange("home");
+        } else {
+          return;
         }
       } catch (err) {
         console.log(err);

@@ -7,6 +7,11 @@ export const imageUrlSubmit = async (imageUrlEntry) => {
       credentials: "include"
     });
 
+    if (response.status === 429) {
+      alert("Too many requests, please try again later.");
+      return;
+    }
+
     if (!response.ok) {
       console.log("Failed image URL submission");
       return null;
@@ -24,6 +29,11 @@ export const imageSubmitCount = async (user) => {
       method: "put",
       credentials: "include"
     });
+
+    if (response.status === 429) {
+      alert("Too many requests, please try again later.");
+      return;
+    }
 
     if (!response.ok) {
       console.log("Failed image submission count update");
@@ -44,6 +54,12 @@ export const checkUrlIfImage = async (imageUrlEntry) => {
       body: JSON.stringify({ imageUrlEntry }),
       credentials: "include"
     });
+
+    if (response.status === 429) {
+      alert("Too many requests, please try again later.");
+      return;
+    }
+
     const data = await response.json();
 
     if (data.message && !data.message.includes("Failed to fetch image headers")) {

@@ -22,13 +22,15 @@ const SignIn = ({ loadUser, onRouteChange }) => {
     try {
       const data = await signin(email, password);
 
-      if (data) {
-        loadUser(data.user);
-        onRouteChange("home");
-      } else {
+      if (data === null) {
         alert("Invalid credentials");
         setEmail("");
         setPassword("");
+      } else if (data) {
+        loadUser(data.user);
+        onRouteChange("home");
+      } else {
+        return;
       }
     } catch (err) {
       console.log(err);

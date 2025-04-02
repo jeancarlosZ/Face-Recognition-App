@@ -32,7 +32,10 @@ const ImageLinkForm = ({ setImageUrl, setFaceBoxes, onRouteChange, user, setUser
 		try {
 			const isImage = await checkUrlIfImage(imageUrlEntry);
 
-			if (isImage !== null && isImage.message) {
+			if (isImage === null) {
+				alert("Invalid image URL");
+				setImageUrl("");
+			} else if (isImage && isImage.message) {
 				alert("Session expired. Logging out...");
 				onRouteChange("signout");
 			} else if (isImage === true) {
@@ -46,8 +49,7 @@ const ImageLinkForm = ({ setImageUrl, setFaceBoxes, onRouteChange, user, setUser
 					displayFaceBoxes(calculateFaceLocations(response));
 				}
 			} else {
-				alert("Invalid image URL");
-				setImageUrl("");
+				return;
 			}
 		} catch (err) {
 			console.log(err);

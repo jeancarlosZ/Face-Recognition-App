@@ -7,6 +7,11 @@ export const register = async (name, email, password) => {
       credentials: "include"
     });
 
+    if (response.status === 429) {
+      alert("Too many requests, please try again later.");
+      return;
+    }
+
     if (!response.ok) {
       console.log("Registration failed");
       return null;
