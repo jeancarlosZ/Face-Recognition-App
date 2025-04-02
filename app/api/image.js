@@ -22,8 +22,6 @@ export const imageSubmitCount = async (user) => {
   try {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/image`, {
       method: "put",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: user.id }),
       credentials: "include"
     });
 

@@ -8,6 +8,7 @@ import ParticlesEffect from "app/components/ParticlesEffect/ParticlesEffect";
 import SignIn from "app/components/SignIn/SignIn";
 import Register from "app/components/Register/Register";
 import Heartbeat from "app/components/Heartbeat/Heartbeat";
+import { logout } from "app/api/logout";
 
 export function App() {
   const [imageUrl, setImageUrl] = useState("");
@@ -25,8 +26,9 @@ export function App() {
     })
   }
 
-  const onRouteChange = (route) => {
+  const onRouteChange = async (route) => {
     if (route === "signout") {
+      await logout();
       setImageUrl("");
       setFaceBoxes([]);
       setRoute("signin");
