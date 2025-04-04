@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { register } from "../../api/register";
 
 const Register = ({ loadUser, onRouteChange }) => {
   const [name, setName] = useState("");
@@ -54,32 +55,28 @@ const Register = ({ loadUser, onRouteChange }) => {
     }
   }
 
-  const onSubmitSignIn = () => {
+  const onSubmitSignIn = async () => {
     if (!nameError && !emailError && !passwordError) {
-      fetch("http://localhost:3000/register", {
-        method: "post",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          password: password
-        })
-      })
-        .then(response => response.json())
-        .then(user => {
-          if (user.id) {
-            loadUser(user);
-            onRouteChange("home");
-          } else {
-            alert("Email already has an account with us.");
-            setName("");
-            setEmail("");
-            setPassword("");
-            setNameError("Name is required");
-            setEmailError("Email is required");
-            setPasswordError("Password is required");
-          }
-        })
+      try {
+        const data = await register(name, email, password);
+
+        if (data === null) {
+          alert("Email already has an account with us.");
+          setName("");
+          setEmail("");
+          setPassword("");
+          setNameError("Name is required");
+          setEmailError("Email is required");
+          setPasswordError("Password is required");
+        } else if (data) {
+          loadUser(data.user);
+          onRouteChange("home");
+        } else {
+          return;
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
 
@@ -90,32 +87,37 @@ const Register = ({ loadUser, onRouteChange }) => {
           <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
             <legend className="f1 fw6 ph0 mh0">Register</legend>
             <div className="mt3">
-              <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
+              <label className="db fw6 lh-copy f6" htmlFor="name">name</label>
               <input
                 className="f6 b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                 type="text"
+                id="name"
                 value={name}
                 placeholder="Please enter name"
+                autoComplete="name"
                 onChange={onNameChange}
               />
             </div>
             {nameError && <p style={{ color: "red" }}>{nameError}</p>}
             <div className="mt3">
-              <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
+              <label className="db fw6 lh-copy f6" htmlFor="email">email</label>
               <input
                 className="f6 b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                 type="email"
+                id="email"
                 value={email}
                 placeholder="Please enter email"
+                autoComplete="email"
                 onChange={onEmailChange}
               />
             </div>
             {emailError && <p style={{ color: "red" }}>{emailError}</p>}
             <div className="mv3">
-              <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
+              <label className="db fw6 lh-copy f6" htmlFor="password">password</label>
               <input
                 className="f6 b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                 type="password"
+                id="password"
                 value={password}
                 placeholder="Please enter password"
                 onChange={onPasswordChange}
