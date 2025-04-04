@@ -1,9 +1,12 @@
-export const imageUrlSubmit = async (imageUrlEntry) => {
+export const imageUrlSubmit = async (user, imageUrlEntry) => {
   try {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/imageurl`, {
       method: "post",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ imageUrlEntry }),
+      body: JSON.stringify({
+        id: user.id,
+        imageUrlEntry
+      }),
       credentials: "include"
     });
 
@@ -27,6 +30,10 @@ export const imageSubmitCount = async (user) => {
   try {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/image`, {
       method: "put",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: user.id
+      }),
       credentials: "include"
     });
 
@@ -46,12 +53,15 @@ export const imageSubmitCount = async (user) => {
   }
 };
 
-export const checkUrlIfImage = async (imageUrlEntry) => {
+export const checkUrlIfImage = async (user, imageUrlEntry) => {
   try {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/check-image`, {
       method: "post",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ imageUrlEntry }),
+      body: JSON.stringify({
+        id: user.id,
+        imageUrlEntry
+      }),
       credentials: "include"
     });
 

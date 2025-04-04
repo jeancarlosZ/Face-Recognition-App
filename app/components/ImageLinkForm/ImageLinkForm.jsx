@@ -29,8 +29,13 @@ const ImageLinkForm = ({ setImageUrl, setFaceBoxes, onRouteChange, user, setUser
 	}
 
 	const onDetectSubmit = async () => {
+		if (!imageUrlEntry || imageUrlEntry.trim() === "") {
+			alert("Image Url cannot be empty");
+			return;
+		}
+
 		try {
-			const isImage = await checkUrlIfImage(imageUrlEntry);
+			const isImage = await checkUrlIfImage(user, imageUrlEntry);
 
 			if (isImage === null) {
 				alert("Invalid image URL");
@@ -40,7 +45,7 @@ const ImageLinkForm = ({ setImageUrl, setFaceBoxes, onRouteChange, user, setUser
 				onRouteChange("signout");
 			} else if (isImage === true) {
 				setImageUrl(imageUrlEntry);
-				const response = await imageUrlSubmit(imageUrlEntry);
+				const response = await imageUrlSubmit(user, imageUrlEntry);
 
 				if (Array.isArray(response)) {
 					const entries = await imageSubmitCount(user);
