@@ -13,6 +13,6 @@ const Navigation = ({ onRouteChange, route }) => {
 			</nav>
 		);
 	}
-}
+};
 
 export default Navigation;

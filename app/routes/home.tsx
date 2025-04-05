@@ -7,8 +7,8 @@ export function meta({ }: Route.MetaArgs) {
     { title: "Face Recognition App" },
     { name: "description", content: "This website will detect faces in your pictures." },
   ];
-}
+};
 
 export default function Home() {
   return <App />;
-}
+};

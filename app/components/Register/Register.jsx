@@ -18,7 +18,7 @@ const Register = ({ loadUser, onRouteChange }) => {
     } else {
       setNameError("");
     }
-  }
+  };
 
   // Regular expression for basic email validation
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -34,7 +34,7 @@ const Register = ({ loadUser, onRouteChange }) => {
     } else {
       setEmailError("");
     }
-  }
+  };
 
   // Minimum length and regular expression for password
   const minLength = 8;
@@ -53,7 +53,7 @@ const Register = ({ loadUser, onRouteChange }) => {
     } else {
       setPasswordError("");
     }
-  }
+  };
 
   const onSubmitSignIn = async () => {
     if (!nameError && !emailError && !passwordError) {
@@ -78,7 +78,7 @@ const Register = ({ loadUser, onRouteChange }) => {
         console.log(err);
       }
     }
-  }
+  };
 
   return (
     <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
@@ -155,6 +155,6 @@ const Register = ({ loadUser, onRouteChange }) => {
       </main>
     </article>
   )
-}
+};
 
 export default Register;

@@ -9,6 +9,6 @@ const Rank = ({ name, entries }) => {
       </div>
     </div>
   );
-}
+};
 
 export default Rank;

@@ -23,8 +23,8 @@ export function App() {
       email: data.email,
       entries: data.entries,
       joined: data.joined
-    })
-  }
+    });
+  };
 
   const onRouteChange = async (route) => {
     if (route === "signout") {
@@ -36,7 +36,7 @@ export function App() {
     } else {
       setRoute(route);
     }
-  }
+  };
 
   return (
     <main className="app">
@@ -70,4 +70,4 @@ export function App() {
       }
     </main>
   );
-}
+};

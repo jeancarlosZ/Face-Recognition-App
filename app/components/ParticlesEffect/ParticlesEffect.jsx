@@ -85,6 +85,6 @@ const ParticlesEffect = () => {
   }
 
   return <></>;
-}
+};
 
 export default ParticlesEffect;
