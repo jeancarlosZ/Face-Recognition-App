@@ -7,11 +7,11 @@ const SignIn = ({ loadUser, onRouteChange }) => {
 
   const onEmailChange = (event) => {
     setEmail(event.target.value);
-  }
+  };
 
   const onPasswordChange = (event) => {
     setPassword(event.target.value);
-  }
+  };
 
   const onSubmitSignIn = async () => {
     if (!email || email.trim() === "" || !password || password.trim() === "") {
@@ -35,7 +35,7 @@ const SignIn = ({ loadUser, onRouteChange }) => {
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
     <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
@@ -87,6 +87,6 @@ const SignIn = ({ loadUser, onRouteChange }) => {
       </main>
     </article>
   )
-}
+};
 
 export default SignIn;

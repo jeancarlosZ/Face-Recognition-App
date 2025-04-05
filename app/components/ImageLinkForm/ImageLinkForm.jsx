@@ -15,18 +15,18 @@ const ImageLinkForm = ({ setImageUrl, setFaceBoxes, onRouteChange, user, setUser
 			faceBox.rightCol = width - (faceBox.rightCol * width);
 			faceBox.bottomRow = height - (faceBox.bottomRow * height);
 			faceBox.leftCol = faceBox.leftCol * width;
-		})
+		});
 
 		return faceBoxes;
-	}
+	};
 
 	const displayFaceBoxes = (faceBoxes) => {
 		setFaceBoxes(faceBoxes);
-	}
+	};
 
 	const onImageUrlEntryChange = (event) => {
 		setImageUrlEntry(event.target.value);
-	}
+	};
 
 	const onDetectSubmit = async () => {
 		if (!imageUrlEntry || imageUrlEntry.trim() === "") {
@@ -61,7 +61,7 @@ const ImageLinkForm = ({ setImageUrl, setFaceBoxes, onRouteChange, user, setUser
 		}
 
 		setImageUrlEntry("");
-	}
+	};
 
 	return (
 		<div>
@@ -87,6 +87,6 @@ const ImageLinkForm = ({ setImageUrl, setFaceBoxes, onRouteChange, user, setUser
 			</div>
 		</div>
 	);
-}
+};
 
 export default ImageLinkForm;
