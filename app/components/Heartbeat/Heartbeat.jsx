@@ -11,9 +11,8 @@ const heartbeatFunction = async () => {
 };
 
 const Heartbeat = () => {
-  heartbeatFunction();
-
   useEffect(() => {
+    heartbeatFunction();
     const intervalId = setInterval(heartbeatFunction, 10 * 60 * 1000);
 
     return () => clearInterval(intervalId);
