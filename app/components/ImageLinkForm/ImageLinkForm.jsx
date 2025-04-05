@@ -37,10 +37,10 @@ const ImageLinkForm = ({ setImageUrl, setFaceBoxes, onRouteChange, user, setUser
 		try {
 			const isImage = await checkUrlIfImage(user, imageUrlEntry);
 
-			if (isImage === null) {
+			if (!isImage || isImage.message && isImage.message[0] && isImage.message[0].msg === "Please provide a valid URL") {
 				alert("Invalid image URL");
 				setImageUrl("");
-			} else if (isImage && isImage.message) {
+			} else if (isImage.message) {
 				alert("Session expired. Logging out...");
 				onRouteChange("signout");
 			} else if (isImage === true) {
