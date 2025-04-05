@@ -1,32 +1,26 @@
-# Welcome to React Router!
+# Face-Recognition-App
 
-A modern, production-ready template for building full-stack React applications using React Router.
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
-
-## Features
-
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+This application can detect faces in an image from a URL link and surround each face with a blue box. This frontend application works together with the backend server [face-recognition-app-api](https://github.com/jeancarlosZ/face-recognition-app-api).
 
 ## Getting Started
 
-### Installation
-
-Install the dependencies:
+Clone this repo and run:
 
 ```bash
 npm install
 ```
 
-### Development
+## Setup .env File
 
-Start the development server with HMR:
+Create a `.env` file in the root directory of this project. Add the following to the `.env` file:
+
+```env
+VITE_API_URL="http://localhost:3000"
+```
+
+## Development
+
+Start the development application by running:
 
 ```bash
 npm run dev
@@ -44,57 +38,4 @@ npm run build
 
 ## Deployment
 
-### Docker Deployment
-
-This template includes three Dockerfiles optimized for different package managers:
-
-- `Dockerfile` - for npm
-- `Dockerfile.pnpm` - for pnpm
-- `Dockerfile.bun` - for bun
-
-To build and run using Docker:
-
-```bash
-# For npm
-docker build -t my-app .
-
-# For pnpm
-docker build -f Dockerfile.pnpm -t my-app .
-
-# For bun
-docker build -f Dockerfile.bun -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
+Create a free account for [Netlify](https://www.netlify.com/). Replace `http://localhost:3000` in the `.env` file with your backend URL. Deploy this application with the environment variable in the `.env` file.
